@@ -15,8 +15,11 @@ import java.util.List;
 @RequestMapping("/journal")
 public class JournalEntryControllerV2 {
 
-    @Autowired
-    private JournalEntryService journalEntryService;
+    private final JournalEntryService journalEntryService;
+
+    public JournalEntryControllerV2(JournalEntryService journalEntryService) {
+        this.journalEntryService = journalEntryService;
+    }
 
     @GetMapping
     public List<JournalEntry> getAllJournalEntries() {
@@ -25,12 +28,11 @@ public class JournalEntryControllerV2 {
 
     @PostMapping
     public ResponseEntity<JournalEntry> createJournalEntry(@RequestBody JournalEntry journalEntry) {
-        journalEntry.setLocalDate(LocalDateTime.now());
+        journalEntry.setLocalDateTime(LocalDateTime.now());
         journalEntryService.saveEntry(journalEntry);
         return new ResponseEntity<>(journalEntry, HttpStatus.CREATED);
     }
 
-    // ✅ GET by ID → /journal/id/{id}
     @GetMapping("id/{id}")
     public ResponseEntity<JournalEntry> findById(@PathVariable ObjectId id) {
         JournalEntry entry = journalEntryService.findByid(id);
