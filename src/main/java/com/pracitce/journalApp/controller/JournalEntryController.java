@@ -1,3 +1,4 @@
+/*
 package com.pracitce.journalApp.controller;
 
 import com.pracitce.journalApp.entity.JournalEntry;
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/journal")
+@RequestMapping("/_journal")
 public class JournalEntryController {
 
     private Map<Long, JournalEntry> journalEntryMap = new HashMap<>();
@@ -40,3 +41,4 @@ public class JournalEntryController {
         return journalEntryMap.put(id, journalEntry);
     }
 }
+*/
