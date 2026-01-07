@@ -1,7 +1,9 @@
 package com.pracitce.journalApp.controller;
 
 import com.pracitce.journalApp.entity.JournalEntry;
+import com.pracitce.journalApp.entity.User;
 import com.pracitce.journalApp.service.JournalEntryService;
+import com.pracitce.journalApp.service.UserService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,10 +17,19 @@ import java.util.List;
 @RequestMapping("/journal")
 public class JournalEntryControllerV2 {
 
-    private final JournalEntryService journalEntryService;
+    @Autowired
+    private JournalEntryService journalEntryService;
+    @Autowired
+    private UserService userService;
 
-    public JournalEntryControllerV2(JournalEntryService journalEntryService) {
-        this.journalEntryService = journalEntryService;
+    @GetMapping("{userName}")
+    public ResponseEntity<?> getJournalEntriesByUser(@PathVariable String userName) {
+        User user = userService.findByuserName(userName);
+        List<JournalEntry> journalEntryList = user.getJournalEntries();
+        if( journalEntryList != null && !journalEntryList.isEmpty() ) {
+            return new ResponseEntity<>(journalEntryList, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping
